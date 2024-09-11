@@ -11,5 +11,11 @@ cp home.txt to home2.txt
 mv home1 to home4    
 rmdir home1
 rn -rf india
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+netstat -plntu   # to show u pid number over system
+kill -9 3317     # kill the procces
+systemctl start httpd
+ps aux
+######################################3
+
 
