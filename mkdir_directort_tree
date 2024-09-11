@@ -5,4 +5,9 @@ echo "thhis hello" >> home.txt
 cat home.txt     # expoce two lines
 mkdir -p india/karnataka/bangalore
 tree
+## in same directory same path
+cp home.txt to home2.txt
+## directory move same path
+mv home1 to home4    
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+
