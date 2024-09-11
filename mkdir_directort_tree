@@ -9,5 +9,7 @@ tree
 cp home.txt to home2.txt
 ## directory move same path
 mv home1 to home4    
+rmdir home1
+rn -rf india
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
 
