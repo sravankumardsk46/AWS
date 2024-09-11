@@ -1,1 +1,37 @@
+##############   TO RUN HTTPD SERVER IN LINUX  ###############################
+  sudo yum update -y
+  sudo yum install -y httpd
+  cd /var/www/html
+  sudo vi index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Test Page</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <p>This is a test page served by Apache on Amazon Linux.</p>
+</body>
+</html>
+
+  sudo systemctl start httpd
+  sudo systemctl enable httpd
+  sudo systemctl status httpd
+copy ip past i google broser
+###################################################################
+# in same server run to nginx can fallow below steps`
+
+### To verify that NGINX or httpd is running and listening on port 80, you can check with:
+sudo lsof -i :80
+sudo systemctl stop httpd
+sudo systemctl start nginx
+#########
+sudo systemctl disable httpd
+# THIS FOR DISABLE HTTPD 
+####################################################################
+################  TO INSTALL NGINX IN SERVER#######################
+
+/usr/share/nginx/html
+
 
