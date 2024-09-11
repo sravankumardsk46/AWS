@@ -31,7 +31,22 @@ sudo systemctl disable httpd
 # THIS FOR DISABLE HTTPD 
 ####################################################################
 ################  TO INSTALL NGINX IN SERVER#######################
-
+yum update
+yum install nginx -y
 /usr/share/nginx/html
-
+vi index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nginx Test Page</title>
+</head>
+<body>
+    <h1>Hello from Nginx!</h1>
+    <p>This page is served by Nginx on Amazon Linux.</p>
+</body>
+</html>
+sudo systemctl stop [httpd]
+sudo systemctl start nginx
+copy ip past i google broser
+##############################################################
 
