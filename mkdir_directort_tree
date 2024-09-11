@@ -1,1 +1,8 @@
-
+touch home.txt
+echo "hello" > home.txt
+cat home.txt
+echo "thhis hello" >> home.txt
+cat home.txt     # expoce two lines
+mkdir -p india/karnataka/bangalore
+tree
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
