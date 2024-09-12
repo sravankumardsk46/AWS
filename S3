@@ -25,4 +25,6 @@ aws s3 cp sample.txt s3://file-bucket-ec2
 # one file create in s3 to cp to ec2 .
 aws s3 cp s3://file-bucket-ec2/file1
                 bucketname      object name
+aws s3 cp "s3://iam-rolr-ec2-s3-bucket/AWS-S3--18.mp4" .     # s3 to local ec2 cp file vedios all object
+download: s3://iam-rolr-ec2-s3-bucket/AWS-S3--18.mp4 to ./AWS-S3--18.mp4
 
