@@ -29,4 +29,15 @@ aws ec2 start-instances --instance-ids 1233445567
 # u can controll ec2 with cli any instances to stop and stsrt intance
 ## current instance to stop only go out
 ##############################################################################
+########################   GROUP IAM   ######################################
+# create two group  dev  test
+1. dev   permitions ec2readonly
+   user_dev1    # consol access 
+   user_dev2    # consol access 
+2. test    permition ec2 full access
+   user_test1    # consol access 
+   user_test2    # consol access  
+###########################################################################
+#####################  role  #########################################
+
 
