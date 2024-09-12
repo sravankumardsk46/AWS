@@ -3,3 +3,23 @@
 # Buket >>>> Folder
 # s3 unique name
 ctrate Bukete
+#########################
+uplode vedio , photo, txt file
+url
+##############################
+Go to ec2 instance connect 
+action
+security
+modify iam role  [select rolr name ]
+yum install awscli
+aws s3 ls
+# show u file on s3 bucket files here
+# in local ec2 server create file
+touch sample.txt
+echo "hello" > sample.txt
+cat sample.txt
+# now here to s3 send file
+aws s3 cp sample.txt s3://file-bucket-ec2
+# to show our bucket object expoce command
+
+
