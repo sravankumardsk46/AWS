@@ -8,3 +8,19 @@ identity access management
     > it give it connected with cli
     access_key :
     secret_key :
+##############################################
+take one server linux
+commands:
+yum install awscli
+aws configure
+access_key:
+secret_key:
+region:
+forment:
+# instance check detaile with cli # it show u console regian all intence detaile
+aws ec2 describe-instances
+## to stop instancce and start instances
+aws ec2 stop-instances --instance-ids 1233445567
+aws ec2 start-instances --instance-ids 1233445567
+##############################################################################
+
