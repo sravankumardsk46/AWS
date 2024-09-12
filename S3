@@ -21,5 +21,8 @@ cat sample.txt
 # now here to s3 send file
 aws s3 cp sample.txt s3://file-bucket-ec2
 # to show our bucket object expoce command
-
+ aws s3 ls s3://file-bucket-ec2
+# one file create in s3 to cp to ec2 .
+aws s3 cp s3://file-bucket-ec2/file1
+                bucketname      object name
 
