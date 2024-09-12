@@ -41,4 +41,6 @@ aws ec2 start-instances --instance-ids 1233445567
 #####################  role  #########################################
            role
 EC2 >>>>>>>>>>>>>>>>>>>>>>>>>>> S3
-
+create rolr 
+permition s3 full access 
+connect to ec2 action>>>security>>>modify iam role >>>>>>>>>>> [show u role name ]
