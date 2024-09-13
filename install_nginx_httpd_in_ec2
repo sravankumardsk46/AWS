@@ -1,6 +1,6 @@
 #########################  NGINX  INSTALL ON SERVER ######################
 yum install nginx
-cd /urs/shear/nginx/html
+cd/usr/share/nginx/html
 systemctl start nginx
 systemctl stop nginx
 port :80
