@@ -1,1 +1,25 @@
+##########  VPC CREATE ##
+name :testvpc
+cidr :10.0.0.0/16
+create
+######## subnet
+attched to testvpc
+name :test subnet
+cider :10.0.1.0/24
+crete
+#############  root table
+name :test rootetable
+attched to test vpc
+create
+##########  igw
+name : testvpc-igw
+action  attche to testvpc
+#########################
+go root table
+edit RT all 0s , and igw ip    save
+##################################
+go to subnet
+edit rote table assosiation >> publicRT 
+#########################################
+create one ec2 instance
 
