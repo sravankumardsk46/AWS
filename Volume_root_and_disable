@@ -1,1 +1,10 @@
-
+To create instace 
+Add valume root qis 8 gb 
+give and add anether valume that 10 gb
+as  u same create instance
+go to server copy instance-id
+go to valume sectiom dashbord left
+past to two valume show u
+## wen stop start instence valume two in-use
+terminate server
+available state valume
