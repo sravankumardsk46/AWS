@@ -4,6 +4,8 @@ cd /urs/shear/nginx/html
 systemctl start nginx
 systemctl stop nginx
 port :80
+netstat -plntu
+## to show u listence ports our server
 #####################################################################
 #################  HTTPD INSTALL ON SERVER  #######################
 it is al so called apache server
