@@ -1,1 +1,15 @@
-#########################  N
+#########################  NGINX  INSTALL ON SERVER ######################
+yum install nginx
+cd /urs/shear/nginx/html
+systemctl start nginx
+systemctl stop nginx
+port :80
+#####################################################################
+#################  HTTPD INSTALL ON SERVER  #######################
+it is al so called apache server
+YUM install httpd 
+cd /var/www/html
+port :80
+systemctl start httpd
+systemctl stop httpd
+########################################################################
