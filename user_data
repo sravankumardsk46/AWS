@@ -1,1 +1,18 @@
+########################### USER  DATA CODE ##########################
+#!/bin/bash
 
+# Update all installed packages
+yum update -y
+
+# Install Nginx
+yum install nginx -y
+
+# Start Nginx service
+systemctl start nginx
+
+# Enable Nginx to start on boot
+systemctl enable nginx
+
+# Replace the default index.html content
+echo "hello" > /usr/share/nginx/html/index.html
+####################################################################################
