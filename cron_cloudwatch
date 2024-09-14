@@ -1,1 +1,8 @@
+############### cron express site ##############################################################
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries_cron.html
+##################################################  stress command ################################
+
+sudo yum install stress  # For Amazon Linux / CentOS / RHEL
+sudo apt install stress  # For Ubuntu / Debian
+stress --cpu 8
+stress --cpu 8 --timeout 30s
