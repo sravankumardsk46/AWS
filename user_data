@@ -21,3 +21,39 @@ systemctl enable nginx
 echo "hello" > /usr/share/nginx/html/index.html
 ####################################################################################
 lanchinstance    ok its works  ###################################################### OK
+##############  ubuntu install usardata  ##  nginx ###################################
+#!/bin/bash
+
+# Update the package list
+apt update -y
+
+# Install Nginx
+apt install nginx -y
+
+# Start Nginx service
+systemctl start nginx
+
+# Enable Nginx to start on boot
+systemctl enable nginx
+
+# Write a custom message to the default Nginx web page in /var/www/html
+echo "Hello, World from Nginx on Ubuntu!" > /var/www/html/index.html
+##################################################################################### OK
+############# to insttal amazon linux usardata code ######  nginx ###########
+#!/bin/bash
+
+# Update the package list
+yum update -y
+
+# Install Nginx
+amazon-linux-extras install nginx1.12 -y
+
+# Start Nginx service
+systemctl start nginx
+
+# Enable Nginx to start on boot
+systemctl enable nginx
+
+# Write a custom message to the default Nginx web page
+echo "Hello, World from Nginx on Amazon Linux!" > /usr/share/nginx/html/index.html
+##########################################################################################
