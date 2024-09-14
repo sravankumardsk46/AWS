@@ -13,3 +13,7 @@ JSON  : Java script object notation
 ############################################
 YAML   : yet another markup language
 ############################################
+Additional Information:
+Ubuntu (Default Nginx Web Root Path): /var/www/html/
+CentOS/RHEL (Default Nginx Web Root Path): /usr/share/nginx/html/
+Nginx Web Root on Amazon Linux: /usr/share/nginx/html/
