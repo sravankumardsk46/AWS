@@ -1,3 +1,8 @@
+vi /var/www/html/index.html
+systemctl restart httpd
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
