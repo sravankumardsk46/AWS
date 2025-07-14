@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS DevOps Training</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2c365;
+            margin: 0;
+            padding: 20px;
+            color: #001f3f;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+        }
+        .box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .course {
+            background-color: #f4f4f4;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .basic { background-color: #ffb300; color: #000; }
+        .aws { background-color: #4b2e83; color: #fff; }
+        .kube { background-color: #00bcd4; color: #000; }
+        .project { background-color: #d32f2f; color: #fff; }
+        .timing, .contact {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .whatsapp {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>AWS DEVOPS TRAINING</h1>
+
+    <div class="box">
+
+        <div class="course basic">
+            <h2>Basic AWS DevOps</h2>
+            <p>Duration: 3 Months</p>
+            <p>Fee: ₹3000</p>
+        </div>
+
+        <div class="course aws">
+            <h2>AWS DevOps</h2>
+            <p>(For those with AWS knowledge)</p>
+            <p>Duration: 2 Months</p>
+            <p>Fee: ₹3000</p>
+        </div>
+
+        <div class="course kube">
+            <h2>Kubernetes & Terraform</h2>
+            <p>Duration: 2 Months</p>
+            <p>Fee: ₹5000</p>
+        </div>
+
+        <div class="course project">
+            <h2>AWS DevOps Project</h2>
+            <p>(For those with AWS DevOps knowledge)</p>
+            <p>Duration: 1 Month</p>
+            <p>Fee: ₹5000</p>
+        </div>
+
+        <div class="timing">
+            <p><strong>Timings: Evening 5 PM to 10 PM</strong></p>
+        </div>
+
+        <div class="contact">
+            <h2>AIM INSTITUTE HYDERABAD</h2>
+            <p class="whatsapp">📱 9492348043</p>
+            <p>Classes start Tomorrow</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
