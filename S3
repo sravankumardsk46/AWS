@@ -59,5 +59,17 @@ this is code s3
     }
   ]
 }
+##########################################################################################################
+✅ Explanation of Each Line:
+
+Part	                                   Meaning
+
+Version                       	AWS policy version. Always use "2012-10-17" for modern policies.
+Statement	                     The list of permissions you are granting.
+Sid                           	Statement ID. Just a name: "PublicReadGetObject" (for your reference).
+Effect                        	"Allow" → You are allowing access.
+Principal                     	"*" → Means anyone in the world (public access).
+Action                        	"s3:GetObject" → Allow action to download/view objects in S3.
+Resource                      	"arn:aws:s3:::your-bucket-name/*" → Applies to all files in the bucket.
 
 
