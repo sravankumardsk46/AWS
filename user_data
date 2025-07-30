@@ -57,3 +57,39 @@ systemctl enable nginx
 # Write a custom message to the default Nginx web page
 echo "Hello, World from Nginx on Amazon Linux!" > /usr/share/nginx/html/index.html
 ##########################################################################################
+user data port forword code 
+#!/bin/bash
+# Update the package list
+apt update -y
+
+# Install Nginx and Apache2
+apt install nginx apache2 -y
+
+# Enable and start Nginx
+systemctl enable nginx
+systemctl start nginx
+
+# Change Apache2 port from 80 to 8080
+sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
+sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf
+
+# Restart Apache2 on port 8080
+systemctl enable apache2
+systemctl restart apache2
+
+# Create a simple HTML page for Nginx
+echo "<h1>Hello from NGINX Web Server</h1>" > /var/www/html/index.nginx.html
+# Update default Nginx index to custom page
+echo 'server {
+    listen 80 default_server;
+    root /var/www/html;
+    index index.nginx.html;
+    server_name _;
+}' > /etc/nginx/sites-available/default
+
+# Reload Nginx
+systemctl reload nginx
+
+# Create a simple HTML page for Apache2
+echo "<h1>Hello from Apache2 Web Server</h1>" > /var/www/html/index.html
+---------------------------------------------------------------------------------------------
