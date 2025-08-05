@@ -1,0 +1,43 @@
+first create one ec2 instance 
+os ubuntu
+availablity zone  ap-south-1a    this is importent take every prosess take same AZ
+create ec2 connect 
+--------------------------
+sudo su
+sudo mkfs.xfs /dev/sdf
+sudo mkdir /data
+sudo mount /dev/xvdf /data    # Amazon Linux
+# or
+sudo mount /dev/sdf /data     # Ubuntu
+
+cd /data
+sudo touch file{1..10}
+ls
+cd ~
+sudo umount /data    # {🟢 Result: umount: /data: not mounted. This means the volume was already unmounted — so there is nothing wrong.}
+@@@@@@@@@  NOW CREATE SNAPSHOT USING EC2 ONE CREATE SNAPSHOT @@@@@@@@@@@
+@@@@@@@@@ NOW USING SNAPSHOT TO CREATE {EBS} VOLUME @@@@@@@@@@@
+------------------------------------
+now create ec2 two 
+os ubuntu
+AZ ap-south-1a  # this is importent 
+create ec2 and running then STOP EC2 TWO
+@@@ go to volume section attach EBS volume to ec2 two @@@
+@@@@  start ec2 two and connect use #####
+lsblk
+sudo file -s /dev/xvdf    # just show u
+sudo file -s /dev/xvdf1   # just show u
+sudo mkdir -p /mnt/mydata   # creat mount point
+sudo mount /dev/xvdf1 /mnt/mydata  # No error = success
+ls /mnt/mydata/data    # this END 
+========================================================================================================== END
+Command                           	Purpose
+lsblk                             	See devices and partitions
+sudo file -s /dev/xvdf	            Check volume format
+sudo file -s /dev/xvdf1	            Check filesystem type
+sudo mkdir /mnt/mydata	            Create mount point
+sudo mount /dev/xvdf1 /mnt/mydata  	Mount the volume
+ls /mnt/mydata/data	                List your files
+------------------------------------------------------------------------------------------------------------- useful commands 
+
+
