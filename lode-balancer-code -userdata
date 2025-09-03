@@ -80,3 +80,80 @@ EOF
 # Restart NGINX to apply changes
 systemctl restart nginx
 ____________________________________________________________________- end __________________________________________________________________________
+
+                                                      NGINX LODA BALANCER EC2 ONE 
+
+
+#!/bin/bash
+# Update and install NGINX and unzip
+apt-get update -y
+apt-get install -y nginx unzip curl
+
+# Enable and start NGINX
+systemctl enable nginx
+systemctl start nginx
+
+# Create HTML page with instance metadata (same look as Apache version)
+cat <<EOF > /var/www/html/index.html
+<html>
+  <center>
+    <body bgcolor="black" text="#39ff14" style="font-family: Arial">
+      <h1>@sravankumar</h1>
+      <h1>Load Balancer Demo one</h1>
+      <h3>Availability Zone: $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)</h3>
+      <h3>Instance Id: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</h3>
+      <h3>Public IP: $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)</h3>
+      <h3>Local IP: $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)</h3>
+    </body>
+  </center>
+</html>
+EOF
+
+# Restart NGINX
+systemctl restart nginx
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+                                        APACHE2 LOAD BALNCER EC2 TWO
+
+#!/bin/bash
+
+# Log all output (for debugging if needed)
+exec > /var/log/user-data.log 2>&1
+
+# Update packages and install Apache
+apt-get update -y
+apt-get install -y apache2 curl
+
+# Enable and start Apache
+systemctl enable apache2
+systemctl start apache2
+
+# Wait for metadata service to be ready
+sleep 5
+
+# Generate HTML with embedded metadata
+cat <<EOF > /var/www/html/index.html
+<html>
+  <head>
+    <title>EC2 Metadata</title>
+  </head>
+  <body bgcolor="black" text="#39ff14" style="font-family: Arial; text-align: center;">
+    <h1>@sravankumar</h1>
+    <h1>Load Balancer Demo TWO</h1>
+    <h3>Availability Zone: $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)</h3>
+    <h3>Instance Id: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</h3>
+    <h3>Public IP: $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)</h3>
+    <h3>Local IP: $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)</h3>
+  </body>
+</html>
+EOF
+
+# Restart Apache to ensure updated page is served
+systemctl restart apache2
+
+
