@@ -1,0 +1,82 @@
+#################################################################################### ec2 one #######################################################
+#!/bin/bash
+
+# Update packages and install Apache and curl
+apt-get update -y
+apt-get install -y apache2 curl
+
+# Enable Apache on boot and start it
+systemctl enable apache2
+systemctl start apache2
+
+# Fetch instance metadata
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | awk -F\" '{print $4}')
+
+# Create a simple HTML page with instance metadata
+cat <<EOF > /var/www/html/index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EC2 Metadata - Apache</title>
+</head>
+<body>
+  <h1>EC2 Instance Metadata</h1>
+  <ul>
+    <li><strong>Instance ID:</strong> $INSTANCE_ID</li>
+    <li><strong>Public IP:</strong> $PUBLIC_IP</li>
+    <li><strong>Private IP:</strong> $PRIVATE_IP</li>
+    <li><strong>Availability Zone:</strong> $AZ</li>
+    <li><strong>Region:</strong> $REGION</li>
+  </ul>
+</body>
+</html>
+EOF
+
+# Restart Apache to ensure it's serving the new file
+systemctl restart apache2
+######################################################################################## end #########################################################################
+-------------------------------------------------------------- ec2 nginx ----------------------------------------------------------------------------------------------
+#!/bin/bash
+
+# Update system and install NGINX and curl
+apt-get update -y
+apt-get install -y nginx curl
+
+# Enable and start NGINX
+systemctl enable nginx
+systemctl start nginx
+
+# Fetch EC2 instance metadata
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | awk -F\" '{print $4}')
+
+# Create a simple HTML file with the instance metadata
+cat <<EOF > /var/www/html/index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EC2 Metadata - NGINX</title>
+</head>
+<body>
+  <h1>EC2 Instance Metadata</h1>
+  <ul>
+    <li><strong>Instance ID:</strong> $INSTANCE_ID</li>
+    <li><strong>Public IP:</strong> $PUBLIC_IP</li>
+    <li><strong>Private IP:</strong> $PRIVATE_IP</li>
+    <li><strong>Availability Zone:</strong> $AZ</li>
+    <li><strong>Region:</strong> $REGION</li>
+  </ul>
+</body>
+</html>
+EOF
+
+# Restart NGINX to apply changes
+systemctl restart nginx
+____________________________________________________________________- end __________________________________________________________________________
