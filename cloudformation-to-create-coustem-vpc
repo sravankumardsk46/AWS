@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: VPC1 with 2 Public Subnets, IGW, and Route Table
+
+Resources:
+  VPC1:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: vpc1
+
+  VPC1PubSub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: ap-south-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: vpc1-pub-sub1
+
+  VPC1PubSub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: ap-south-1b
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: vpc1-pub-sub2
+
+  VPC1IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: vpc1-IGW
+
+  AttachVPC1IGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC1
+      InternetGatewayId: !Ref VPC1IGW
+
+  VPC1RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: vpc1-RT
+
+  VPC1DefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachVPC1IGW
+    Properties:
+      RouteTableId: !Ref VPC1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VPC1IGW
+
+  VPC1Sub1RTAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPC1PubSub1
+      RouteTableId: !Ref VPC1RouteTable
+
+  VPC1Sub2RTAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPC1PubSub2
+      RouteTableId: !Ref VPC1RouteTable
+
+Outputs:
+  VPCId:
+    Value: !Ref VPC1
+    Description: VPC ID of vpc1
+  Subnet1Id:
+    Value: !Ref VPC1PubSub1
+    Description: Subnet ID of vpc1-pub-sub1
+  Subnet2Id:
+    Value: !Ref VPC1PubSub2
+    Description: Subnet ID of vpc1-pub-sub2
+  RouteTableId:
+    Value: !Ref VPC1RouteTable
+    Description: Route Table ID of vpc1-RT
+  InternetGatewayId:
+    Value: !Ref VPC1IGW
+    Description: Internet Gateway ID of vpc1-IGW
