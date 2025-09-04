@@ -1,3 +1,4 @@
+   -----------------------------------------------------------THIS VPC FOR LOAD BALANCER ----------------------------------------
 AWSTemplateFormatVersion: "2010-09-09"
 Description: VPC1 with 2 Public Subnets, IGW, and Route Table
 
@@ -91,3 +92,150 @@ Outputs:
   InternetGatewayId:
     Value: !Ref VPC1IGW
     Description: Internet Gateway ID of vpc1-IGW
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------  THIS VPC FOR RDS USING CLOUD FORMATION ----------------------------------------------------
+AWSTemplateFormatVersion: "2010-09-09"
+Description: VPC with 1 Public Subnet + 2 Private Subnets + IGW + NAT
+
+Resources:
+  # VPC
+  VPC1:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: vpc1
+
+  # Public Subnet
+  VPC1PubSub:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: ap-south-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: vpc1-pub-sub
+
+  # Private Subnet 1
+  VPC1PvtSub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: ap-south-1b
+      Tags:
+        - Key: Name
+          Value: vpc1-pvt-sub1
+
+  # Private Subnet 2
+  VPC1PvtSub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: ap-south-1c
+      Tags:
+        - Key: Name
+          Value: vpc1-pvt-sub2
+
+  # Internet Gateway
+  VPC1IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: vpc1-IGW
+
+  AttachVPC1IGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC1
+      InternetGatewayId: !Ref VPC1IGW
+
+  # Elastic IP for NAT
+  VPC1NATEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # NAT Gateway (inside public subnet)
+  VPC1NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt VPC1NATEIP.AllocationId
+      SubnetId: !Ref VPC1PubSub
+      Tags:
+        - Key: Name
+          Value: vpc1-NAT
+
+  # Public Route Table
+  VPC1PublicRT:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: vpc1-public-RT
+
+  VPC1PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachVPC1IGW
+    Properties:
+      RouteTableId: !Ref VPC1PublicRT
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VPC1IGW
+
+  VPC1PubSubnetAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPC1PubSub
+      RouteTableId: !Ref VPC1PublicRT
+
+  # Private Route Table (for both private subnets)
+  VPC1PrivateRT:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: vpc1-private-RT
+
+  VPC1PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref VPC1PrivateRT
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref VPC1NATGateway
+
+  VPC1PvtSub1Assoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPC1PvtSub1
+      RouteTableId: !Ref VPC1PrivateRT
+
+  VPC1PvtSub2Assoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref VPC1PvtSub2
+      RouteTableId: !Ref VPC1PrivateRT
+
+Outputs:
+  VPCId:
+    Value: !Ref VPC1
+  PublicSubnet:
+    Value: !Ref VPC1PubSub
+  PrivateSubnet1:
+    Value: !Ref VPC1PvtSub1
+  PrivateSubnet2:
+    Value: !Ref VPC1PvtSub2
+  IGW:
+    Value: !Ref VPC1IGW
+  NAT:
+    Value: !Ref VPC1NATGateway
+----------------------------------------------------------------------------------------------------------------------------------------------
