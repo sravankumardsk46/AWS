@@ -1,0 +1,27 @@
+touch setup-apache.sh
+#!/bin/bash
+# Update package list
+sudo apt-get update -y
+
+# Install Apache
+sudo apt-get install -y apache2
+
+# Enable and start Apache
+sudo systemctl enable apache2
+sudo systemctl start apache2
+
+# Create a test HTML page
+echo "<h1>Hello from $(hostname) - Ubuntu Server Ready</h1>" | sudo tee /var/www/html/index.html
+
+# Allow HTTP if UFW firewall is enabled
+if command -v ufw >/dev/null 2>&1; then
+  sudo ufw allow 80/tcp || true
+fi
+
+# Show Apache status
+sudo systemctl status apache2 --no-pager
+--------------
+chmod +x setup-apache.sh
+--------------
+./setup-apache.sh
+----------------  end ready apache2------------
