@@ -10,3 +10,5 @@ apt install stress
  stress --cpu 8
 
 ------------- it genarate alaram ____________________-
+ps aux | grep stress
+kill -9 <PID>
