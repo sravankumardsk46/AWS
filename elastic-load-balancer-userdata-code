@@ -1,0 +1,82 @@
+#################################################### USERDATA LOAD BALANCER ONE  ############################################## 
+#!/bin/bash
+# Update system and install Apache
+apt-get update -y
+apt-get install -y apache2 unzip curl
+
+# Get IMDSv2 token
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
+  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+# Fetch instance metadata
+AZ=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/placement/availability-zone)
+IID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/instance-id)
+PUBIP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/public-ipv4)
+LOCALIP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/local-ipv4)
+
+# Build HTML page
+cat <<EOF > /var/www/html/index.html
+<html>
+<center>
+<body bgcolor="black" text="#39ff14" style="font-family: Arial">
+  <h1>@AWS_DEVOPS_TRAINING_D.S.KUMAR_9492348043</h1>
+  <h1>Load Balancer ONE</h1>
+  <h3>Availability Zone: $AZ</h3>
+  <h3>Instance Id: $IID</h3>
+  <h3>Public IP: $PUBIP</h3>
+  <h3>Local IP: $LOCALIP</h3>
+</body>
+</center>
+</html>
+EOF
+
+# Restart Apache to load the new page
+systemctl restart apache2
+systemctl enable apache2
+---------------------------------------------------------------------------------------
+#################################################### USERDATA LOAD BALANCER TWO  ############################################## 
+#!/bin/bash
+# Update system and install Apache
+apt-get update -y
+apt-get install -y apache2 unzip curl
+
+# Get IMDSv2 token
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
+  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+# Fetch instance metadata
+AZ=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/placement/availability-zone)
+IID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/instance-id)
+PUBIP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/public-ipv4)
+LOCALIP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/local-ipv4)
+
+# Build HTML page
+cat <<EOF > /var/www/html/index.html
+<html>
+<center>
+<body bgcolor="black" text="#39ff14" style="font-family: Arial">
+  <h1>@AWS_Devops_TRAINING_BY_D.S.KUMAR</h1>
+  <h1>Load Balancer Demo</h1>
+  <h3>Availability Zone: $AZ</h3>
+  <h3>Instance Id: $IID</h3>
+  <h3>Public IP: $PUBIP</h3>
+  <h3>Local IP: $LOCALIP</h3>
+</body>
+</center>
+</html>
+EOF
+
+# Restart Apache to load the new page
+systemctl restart apache2
+systemctl enable apache2
+------------------------------------------------------- END ---------------------------------------
+
+
