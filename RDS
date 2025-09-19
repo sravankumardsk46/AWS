@@ -1,0 +1,23 @@
+first create vpc1 
+create vpc1-pub-sub   1a
+vpc1-pvt-sub2   1b
+vpc1-pvt-pub3   1c
+vpc1-pub-RT
+vpc1-pvt-RT
+IGW subnet assosiation route assosiation
+NAT        assosiation route assosiation
+#################### RDS ##############
+create subnet group  
+add only pvt subnet here 
+create databace 
+take security group give port 3306
+it genarate endpoint copy 
+###########################
+now create ec2 use pub-subnet  
+connect use below commands 
+✅ Correct package on Ubuntu EC2 is:
+sudo apt update
+sudo apt install -y mysql-server
+Then connect to your RDS with:
+mysql -h <RDS-ENDPOINT> -u <USERNAME> -p
+SHOW DATABASES;
