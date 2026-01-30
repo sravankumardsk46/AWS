@@ -72,4 +72,100 @@ Principal                     	"*" → Means anyone in the world (public access)
 Action                        	"s3:GetObject" → Allow action to download/view objects in S3.
 Resource                      	"arn:aws:s3:::your-bucket-name/*" → Applies to all files in the bucket.
 
+---------------------------------------------------------------------------------------------------------------------------------------
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1697075884818",
+    "Statement": [
+        {
+            "Sid": "Stmt1697075871251",
+            "Effect": "Deny",
+            "Principal": {
+                "AWS": "arn:aws:iam::000961310877:user/test"
+            },
+            "Action": [
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+                "s3:GetBucketPolicy",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::project-dsk-boss",
+                "arn:aws:s3:::project-dsk-boss/*"
+            ]
+        }
+    ]
+}
+------------------------------------------------------------------------------------------------------------------------------------
+🧠 Explanation (Line by Line)
+🔹 "Id": "Policy1697075884818"
+
+Just a name/identifier for this policy
+
+Used for reference only
+
+🔹 "Version": "2012-10-17"
+
+Policy language version
+
+This is the latest and standard version AWS uses
+
+🔹 "Statement"
+
+A list of permission rules
+
+Here, there is only one rule
+
+🔹 "Sid": "Stmt1697075871251"
+
+Statement ID
+
+Helps identify this rule inside the policy
+
+🔹 "Action"
+
+These are the S3 operations being controlled:
+
+Action	Meaning
+s3:PutObject	Upload a file
+s3:DeleteObject	Delete a file
+s3:DeleteObjectVersion	Delete a versioned file
+s3:GetBucketPolicy	View bucket policy
+🔹 "Effect": "Deny"
+
+This means block these actions
+
+❗ Deny always overrides Allow in AWS
+
+🔹 "Resource"
+
+Defines where this deny applies:
+
+arn:aws:s3:::yvt.avinash.telugu → the bucket itself
+
+arn:aws:s3:::yvt.avinash.telugu/* → all objects inside the bucket
+
+So this applies to bucket + all files.
+
+🔹 "Principal"
+
+Defines WHO this rule applies to:
+
+IAM user: policytest
+
+AWS Account: 501170964283
+
+Only this user is affected by this policy.
+
+🧪 Final Result (What the user can/cannot do)
+Action	Result
+Upload file	❌ Denied
+Delete file	❌ Denied
+Delete version	❌ Denied
+View bucket policy	❌ Denied
+
+Even if the user has admin access, this policy still blocks these actions.
+------------------------------------------------------------------------------------------------------------
+
+
 
