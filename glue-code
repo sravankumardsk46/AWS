@@ -1,0 +1,141 @@
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.job import Job
+from pyspark.sql.functions import lit
+from awsglue.dynamicframe import DynamicFrame
+from awsgluedq.transforms import EvaluateDataQuality
+import logging
+
+# ------------------ Logger Setup ------------------
+logger = logging.getLogger('my_logger')
+logger.setLevel(logging.INFO)
+
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.INFO)
+    logger.addHandler(handler)
+
+logger.info('Glue Job Started')
+
+# ------------------ Glue Context ------------------
+args = getResolvedOptions(sys.argv, ["JOB_NAME"])
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+job = Job(glueContext)
+job.init(args["JOB_NAME"], args)
+
+# ------------------ Read from Catalog ------------------
+S3bucket_node1 = glueContext.create_dynamic_frame.from_catalog(
+    database="mydatabase",
+    table_name="product",
+    transformation_ctx="S3bucket_node1"
+)
+
+logger.info('Print schema of source')
+S3bucket_node1.printSchema()
+
+count = S3bucket_node1.count()
+logger.info(f"Row count: {count}")
+
+# ------------------ Apply Mapping ------------------
+ApplyMapping_node2 = ApplyMapping.apply(
+    frame=S3bucket_node1,
+    mappings=[
+        ("marketplace", "string", "new_marketplace", "string"),
+        ("customer_id", "long", "new_customer_id", "long"),
+        ("product_id", "string", "new_product_id", "string"),
+        ("seller_id", "string", "new_seller_id", "string"),
+        ("sell_date", "string", "new_sell_date", "string"),
+        ("quantity", "long", "new_quantity", "long"),
+        ("year", "string", "new_year", "string"),
+    ],
+    transformation_ctx="ApplyMapping_node2"
+)
+
+# ------------------ Resolve Choice ------------------
+ResolveChoice_node = ApplyMapping_node2.resolveChoice(
+    specs=[('new_seller_id', 'cast:long')],
+    transformation_ctx="ResolveChoice_node"
+)
+
+logger.info('Schema after ResolveChoice')
+ResolveChoice_node.printSchema()
+
+# ------------------ Data Quality ------------------
+DEFAULT_DATA_QUALITY_RULESET = """
+    Rules = [
+        ColumnCount > 0
+    ]
+"""
+
+EvaluateDataQuality().process_rows(
+    frame=ResolveChoice_node,
+    ruleset=DEFAULT_DATA_QUALITY_RULESET,
+    publishing_options={
+        "dataQualityEvaluationContext": "DQ_Node",
+        "enableDataQualityResultsPublishing": True
+    },
+    additional_options={
+        "dataQualityResultsPublishing.strategy": "BEST_EFFORT",
+        "observations.scope": "ALL"
+    }
+)
+
+# ------------------ Convert to Spark DF ------------------
+logger.info('Convert DynamicFrame to DataFrame')
+df = ResolveChoice_node.toDF()
+
+# ------------------ Transformations ------------------
+logger.info('Filter non-null seller_id')
+df_filtered = df.filter("new_seller_id IS NOT NULL")
+
+logger.info('Add new column new_status')
+df_filtered = df_filtered.withColumn("new_status", lit("Active"))
+
+df_filtered.show()
+
+# ------------------ SQL Processing ------------------
+logger.info('Create temp view')
+df_filtered.createOrReplaceTempView("product_view")
+
+logger.info('Run aggregation query')
+product_sql_df = spark.sql("""
+    SELECT 
+        new_year,
+        COUNT(new_customer_id) AS cnt,
+        SUM(new_quantity) AS qty
+    FROM product_view
+    GROUP BY new_year
+""")
+
+product_sql_df.show()
+
+# ------------------ Convert back to DynamicFrame ------------------
+logger.info('Convert DataFrame back to DynamicFrame')
+final_dynamic_frame = DynamicFrame.fromDF(
+    product_sql_df,
+    glueContext,
+    "final_dynamic_frame"
+)
+
+# ------------------ Write to S3 ------------------
+logger.info('Writing output to S3')
+glueContext.write_dynamic_frame.from_options(
+    frame=final_dynamic_frame,
+    connection_type="s3",
+    format="glueparquet",
+    connection_options={
+        "path": "s3://myglue-etl-project-s33/output/",
+        "partitionKeys": ["new_year"]   # Added partition
+    },
+    format_options={"compression": "snappy"},
+    transformation_ctx="S3_output"
+)
+
+logger.info('Glue ETL Job Completed Successfully')
+
+job.commit()
