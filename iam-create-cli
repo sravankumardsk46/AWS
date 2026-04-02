@@ -1,0 +1,11 @@
+# Create user
+aws iam create-user --user-name dskumar-user
+
+# Create console password
+aws iam create-login-profile \
+--user-name dskumar-user \
+--password 'dskumar@123' \
+--password-reset-required
+
+# Create access key
+aws iam create-access-key --user-name dskumar-user
